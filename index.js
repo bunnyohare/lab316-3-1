@@ -47,23 +47,54 @@ subMenuEl.style.height = "100%";
 subMenuEl.style.backgroundColor = 'var(--sub-menu-bg)';
 subMenuEl.classList.add("flex-around");
 subMenuEl.style.position = "absolute";
-subMenuEl.style.top = 0;
+subMenuEl.style.top = "0";
 
 const topMenuLinks = document.querySelectorAll('a');
 
 topMenuEl.addEventListener("click", (event) => {
   event.preventDefault();
-  if (event.target.tagName.toLowerCase() != 'a'){ return;
+
+  // Check if the clicked element is an <a> tag and does not have class "active"
+  if (event.target.tagName.toLowerCase() === 'a' && !event.target.classList.contains('active')) {
+    // Remove "active" class from all links
+    topMenuLinks.forEach(link => link.classList.remove('active'));
+
+    // Add "active" class to the clicked link
+    event.target.classList.add("active");
+
+    // Check if the corresponding item in menuLinks has subLinks
+    const index = Array.from(topMenuLinks).indexOf(event.target);
+    if (index >= 0 && menuLinks[index].subLinks) {
+      // Set the CSS top property of subMenuEl to 100%
+      subMenuEl.style.top = "100%";
+
+        // Build submenu based on the clicked link's subLinks
+        buildSubmenu(menuLinks[index].subLinks);
+
+     }
   }
-  // if target element clicked add active to it
-  event.target.classList.add("active");
-
-  topMenuLinks.forEach(link => link.classList.remove('active'));
-
-  console.log(event.target.classList.add("active"));
-  topMenuEl.classList.toggle("active");
-  
-
-  console.log(topMenuEl)
-
+  else {
+    // If there are no subLinks, hide the sub menu
+    subMenuEl.style.top = "0";
+  }
 });
+
+function buildSubmenu(subLinks) {
+  // Clear the current contents of subMenuEl
+  subMenuEl.innerHTML = '';
+
+  // Iterate over the subLinks array
+  subLinks.forEach(link => {
+    // Create an <a> element
+    const subMenuItem = document.createElement('a');
+    
+    // Add an href attribute
+    subMenuItem.href = link.href;
+    
+    // Set the element's content
+    subMenuItem.textContent = link.text;
+    
+    // Append the new element to subMenuEl
+    subMenuEl.appendChild(subMenuItem);
+  });
+}
