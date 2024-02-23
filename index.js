@@ -83,7 +83,7 @@ function buildSubmenu(subLinks) {
   // Clear the current contents of subMenuEl
   subMenuEl.innerHTML = '';
 
-  // Iterate over the subLinks array adding subMenuItems to subMEnuEl
+  // Iterate over the subLinks array adding subMenuItems to subMenu
   subLinks.forEach(link => {
     const subMenuItem = document.createElement('a');
     subMenuItem.href = link.href;
