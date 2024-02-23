@@ -83,18 +83,29 @@ function buildSubmenu(subLinks) {
   // Clear the current contents of subMenuEl
   subMenuEl.innerHTML = '';
 
-  // Iterate over the subLinks array
+  // Iterate over the subLinks array adding subMenuItems to subMEnuEl
   subLinks.forEach(link => {
-    // Create an <a> element
     const subMenuItem = document.createElement('a');
-    
-    // Add an href attribute
     subMenuItem.href = link.href;
-    
-    // Set the element's content
     subMenuItem.textContent = link.text;
-    
-    // Append the new element to subMenuEl
     subMenuEl.appendChild(subMenuItem);
   });
 }
+
+// Attach a delegated 'click' event listener to subMenuEl
+subMenuEl.addEventListener('click', (event) => {
+  event.preventDefault();
+  if (event.target.tagName.toLowerCase() !== 'a') {
+    return;
+  }
+  console.log(event.target.textContent);
+
+  // Set the CSS top property of subMenuEl to 0
+  subMenuEl.style.top = '0';
+
+  // Remove the active class from each <a> element in topMenuLinks
+  topMenuLinks.forEach(link => link.classList.remove('active'));
+
+  // Update the contents of mainEl within an <h1> to the contents of the <a> element clicked within subMenuEl
+  mainEl.innerHTML = `<h1>${event.target.textContent}</h1>`;
+});
